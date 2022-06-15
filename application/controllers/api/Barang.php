@@ -18,6 +18,7 @@ class Barang extends REST_Controller
 	public function index_get()
 	{
 		$kode = $this->get('kode');
+
 		if ($kode === null) {
 			$barang = $this->barang->getBarang();
 		} else {
@@ -32,7 +33,7 @@ class Barang extends REST_Controller
 		} else {
 			$this->response([
 				'status' => false,
-				'data' => 'kode not found'
+				'data' => 'Kode tidak ditemukan!'
 			], REST_Controller::HTTP_NOT_FOUND);
 		}
 	}
@@ -44,19 +45,19 @@ class Barang extends REST_Controller
 		if ($kode === null) {
 			$this->response([
 				'status' => false,
-				'message' => 'Provide a kode'
+				'message' => 'Kode tidak ditemukan!'
 			], REST_Controller::HTTP_BAD_REQUEST);
 		} else {
 			if ($this->barang->deleteBarang($kode) > 0) {
 				$this->response([
 					'status' => true,
 					'kode' => $kode,
-					'message' => 'Data Barang has been deleted!'
+					'message' => 'Data barang berhasil dihapus!'
 				], REST_Controller::HTTP_NO_CONTENT);
 			} else {
 				$this->response([
 					'status' => false,
-					'message' => 'kode not found'
+					'message' => 'Data barang gagal dihapus! Kode tidak ditemukan!'
 				], REST_Controller::HTTP_BAD_REQUEST);
 			}
 		}
@@ -71,15 +72,16 @@ class Barang extends REST_Controller
 			'harga' => $this->post('harga'),
 			'stok' => $this->post('stok')
 		];
+
 		if ($this->barang->createBarang($data) > 0) {
 			$this->response([
 				'status' => true,
-				'message' => 'new barang has been created.'
+				'message' => 'Data barang berhasil ditambahkan!'
 			], REST_Controller::HTTP_CREATED);
 		} else {
 			$this->response([
 				'status' => false,
-				'message' => 'failed to create new data!'
+				'message' => 'Data barang gagal ditambahkan!'
 			], REST_Controller::HTTP_BAD_REQUEST);
 		}
 	}
@@ -87,23 +89,24 @@ class Barang extends REST_Controller
 	public function index_put()
 	{
 		$kode = $this->put('kode');
+
 		$data = [
 			'kode' => $this->put('kode'),
 			'nama_barang' => $this->put('nama_barang'),
 			'jenis' => $this->put('jenis'),
 			'harga' => $this->put('harga'),
-			'stok' => $this->put('jurusan')
+			'stok' => $this->put('stok')
 		];
 
 		if ($this->barang->updateBarang($data, $kode) > 0) {
 			$this->response([
 				'status' => true,
-				'message' => 'data barang has been updated.'
+				'message' => 'Data barang berhasil diperbarui!'
 			], REST_Controller::HTTP_NO_CONTENT);
 		} else {
 			$this->response([
 				'status' => false,
-				'message' => 'failed to update new data!'
+				'message' => 'Data barang gagal diperbarui!'
 			], REST_Controller::HTTP_BAD_REQUEST);
 		}
 	}
