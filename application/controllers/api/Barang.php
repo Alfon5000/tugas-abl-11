@@ -13,6 +13,7 @@ class Barang extends REST_Controller
 	{
 		parent::__construct();
 		$this->load->model('Barang_model', 'barang');
+		$this->methods['index_get']['limit'] = 2;
 	}
 
 	public function index_get()
